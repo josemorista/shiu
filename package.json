@@ -7,8 +7,7 @@
     "build": "npx tsc"
   },
   "bin": {
-    "us-inject": "bin/inject-secrets.js",
-    "us-pull": "bin/pull-secrets.js"
+    "us": "bin/us.js"
   },
   "keywords": [],
   "author": "",
