@@ -4,8 +4,8 @@ import { DotEnvSecretsExportVisitor } from '../visitors/DotEnvSecretsExportVisit
 export class PullSecretsUseCase {
   constructor(private injector: SecretInjector) {}
 
-  async execute() {
+  async execute(path?: string) {
     await this.injector.loadSecrets();
-    await this.injector.accept(new DotEnvSecretsExportVisitor(process.argv[2]));
+    await this.injector.accept(new DotEnvSecretsExportVisitor(path));
   }
 }

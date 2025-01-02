@@ -4,25 +4,30 @@ const { CreateInjector } = require('../dist/factories/CreateInjector');
 const { InjectSecretsUseCase } = require('../dist/useCases/InjectSecrets');
 const { PullSecretsUseCase } = require('../dist/useCases/PullSecrets');
 const { InitUseCase } = require('../dist/useCases/Init');
+const { ProgramArgs } = require('../dist/entities/ProgramArgs');
 
-const cmd = process.argv[2] || 'inject';
+const cmd = process.argv[2];
+const args = new ProgramArgs(3);
 
-if (cmd === 'init') {
-  const initUseCase = new InitUseCase();
-  initUseCase.execute({
-    providers: (process.argv[3] || '').split(','),
-  });
-} else {
-  const injectorFactory = new CreateInjector();
+const injectorFactory = new CreateInjector();
+const initUseCase = new InitUseCase();
 
-  injectorFactory.create().then((injector) => {
-    const useCases = {
-      inject: new InjectSecretsUseCase(injector),
-      pull: new PullSecretsUseCase(injector),
-    };
+const useCases = {
+  inject: async () => {
+    const injector = await injectorFactory.create();
+    return new InjectSecretsUseCase(injector).execute(process.argv[3] || args.safeGet('path'));
+  },
+  pull: async () => {
+    const injector = await injectorFactory.create();
+    return new PullSecretsUseCase(injector).execute(args.get('env-path'));
+  },
+  init: () => {
+    return initUseCase.execute({
+      providers: args.safeGet('providers').split(','),
+    });
+  },
+};
 
-    if (!(cmd in useCases)) throw new Error('Invalid script');
+if (!(cmd in useCases)) throw new Error('Invalid script');
 
-    useCases[cmd].execute();
-  });
-}
+useCases[cmd]();

@@ -1,7 +1,9 @@
-Usage with node --import=us-inject
+Usage with
 
-npx us-pull {{.env_path}}
+us inject {{file_path}}
 
-npx us-convert-config teller .teller.yml
+us pull [--env-path={{.env_path}}]
 
-npx us-init ssm,...
+us import --from=teller --config-path=.teller.yml
+
+us init --providers=ssm,...
