@@ -1,5 +1,5 @@
 export class ProgramArgs {
-  private args: Map<string, undefined | string>;
+  args: Map<string, undefined | string>;
 
   private parseArgs(argsStart: number) {
     process.argv.slice(argsStart).forEach((arg) => {
