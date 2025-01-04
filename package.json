@@ -1,6 +1,6 @@
 {
   "name": "universal-secrets",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "scripts": {
     "test:unit": "node --import=tsx --test --experimental-test-coverage tests/unit/**/*.test.ts",
