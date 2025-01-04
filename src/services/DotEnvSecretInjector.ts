@@ -15,6 +15,7 @@ export class DotEnvSecretInjector extends SecretInjector {
     (await import('dotenv')).config({
       processEnv: vars,
       path: this.config.path,
+      override: true,
     });
     const secrets: Array<Secret> = [];
     for (const [key, value] of Object.entries(vars)) {
