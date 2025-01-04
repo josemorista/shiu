@@ -2,25 +2,29 @@ import { join } from 'path';
 import { ConfigFile } from '../entities/ConfigFile';
 import { SecretInjectorComposer } from '../services/SecretInjectorComposer';
 import { AwsSSMSecretInjector } from '../services/AwsSSMSecretInjector';
+import { DotEnvSecretInjector } from '../services/DotEnvSecretInjector';
 
 export class CreateInjector {
-  private getPath() {
-    return process.env.US_CONFIG_PATH || process.env.PWD || '.';
+  private getDir() {
+    return process.env.PWD || '.';
   }
 
-  private async importConfigFile() {
+  private async importConfigFile(configFile?: string) {
+    if (configFile) return import(join(this.getDir(), configFile));
+
     try {
-      return await import(join(this.getPath(), 'us-config.mjs'));
+      return await import(join(this.getDir(), 'us-config.mjs'));
     } catch {
-      return await import(join(this.getPath(), 'us-config.js'));
+      return await import(join(this.getDir(), 'us-config.js'));
     }
   }
 
-  async create() {
-    const config: ConfigFile = (await this.importConfigFile()).default;
+  async create(configFile?: string) {
+    const config: ConfigFile = (await this.importConfigFile(configFile)).default;
 
     const secretInjector = new SecretInjectorComposer();
     if (config.ssm) secretInjector.registerInjector(new AwsSSMSecretInjector(config.ssm));
+    if (config.dotenv) secretInjector.registerInjector(new DotEnvSecretInjector(config.dotenv));
 
     return secretInjector;
   }

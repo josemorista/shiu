@@ -14,16 +14,17 @@ const initUseCase = new InitUseCase();
 
 const useCases = {
   inject: async () => {
-    const injector = await injectorFactory.create();
-    return new InjectSecretsUseCase(injector).execute(process.argv[3] || args.safeGet('path'));
+    const injector = await injectorFactory.create(args.get('config'));
+    return new InjectSecretsUseCase(injector).execute(args.get('f') || args.safeGet('file'));
   },
   pull: async () => {
     const injector = await injectorFactory.create();
-    return new PullSecretsUseCase(injector).execute(args.get('env-path'));
+    return new PullSecretsUseCase(injector).execute(args.get('outfile'));
   },
   init: () => {
     return initUseCase.execute({
       providers: args.safeGet('providers').split(','),
+      outfile: args.get('outfile'),
     });
   },
 };

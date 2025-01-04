@@ -2,6 +2,7 @@ import { writeFile } from 'fs/promises';
 
 interface Input {
   providers: Array<string>;
+  outfile?: string;
 }
 
 export class InitUseCase {
@@ -10,14 +11,17 @@ export class InitUseCase {
     if (input.providers.includes('ssm')) {
       providersConfig.push('ssm: { variables: [] }');
     }
+    if (input.providers.includes('dotenv')) {
+      providersConfig.push("dotenv: { path: '.env' }");
+    }
 
     await writeFile(
-      'us-config.js',
+      input.outfile || 'us-config.js',
       `/**
  * @type {import('universal-secrets').ConfigFile}
  */
 module.exports = {
-  ${providersConfig.join(',\n')}
+  ${providersConfig.join(',\n  ')}
 };
 `
     );

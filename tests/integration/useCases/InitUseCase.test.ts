@@ -6,22 +6,24 @@ import { readFile, unlink } from 'node:fs/promises';
 describe('InitUseCase', () => {
   describe('When provider is ssm', () => {
     afterEach(async () => {
-      await unlink('us-config.js');
+      await unlink('us-init-config.js');
     });
 
-    it('Should load secrets', async () => {
+    it('Should create config file with providers', async () => {
       const sut = new InitUseCase();
       await sut.execute({
-        providers: ['ssm'],
+        providers: ['ssm', 'dotenv'],
+        outfile: 'us-init-config.js',
       });
-      const content = await readFile('us-config.js', 'utf8');
+      const content = await readFile('us-init-config.js', 'utf8');
       expect.equal(
         content,
         `/**
  * @type {import('universal-secrets').ConfigFile}
  */
 module.exports = {
-  ssm: { variables: [] }
+  ssm: { variables: [] },
+  dotenv: { path: '.env' }
 };
 `
       );

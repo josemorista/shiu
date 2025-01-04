@@ -1,9 +1,9 @@
 Usage with
 
-us inject {{file_path}}
+us inject -f={{file_path}} [-c=us-config.js]
 
-us pull [--env-path={{.env_path}}]
+us pull [--outfile={{.env_path}}]
 
-us import --from=teller --config-path=.teller.yml
+us import --from=teller -c=.teller.yml
 
-us init --providers=ssm,...
+us init --providers=ssm,dotenv,...

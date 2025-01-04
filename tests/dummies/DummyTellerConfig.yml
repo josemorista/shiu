@@ -1,0 +1,30 @@
+project: universal-secrets
+
+# Set this if you want to carry over parent process' environment variables
+carry_env: true
+
+#
+# Variables
+#
+opts:
+  region: env:AWS_REGION
+
+#
+# Providers
+#
+providers:
+  aws_ssm:
+    env:
+      MYSQL_HOST:
+        path: /prod/global/mysql/main/host
+        decrypt: true
+      MYSQL_PASSWORD:
+        path: /prod/agropedd-items-api/mysql/main/password
+        decrypt: true
+      USER_AUTH_SECRET:
+        path: /prod/global/secrets/user-auth-secret
+        decrypt: true
+      ASSETS_PUBLIC_URL:
+        path: /prod/global/cf/distribution-url/assets
+      SELLER_UPDATE_QUEUE:
+        path: /prod/global/sqs/queue-url/sellers
