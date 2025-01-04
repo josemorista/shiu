@@ -8,7 +8,7 @@ export class CreateInjector {
     return process.env.US_CONFIG_PATH || process.env.PWD || '.';
   }
 
-  async importConfigFile() {
+  private async importConfigFile() {
     try {
       return await import(join(this.getPath(), 'us-config.mjs'));
     } catch {
@@ -17,7 +17,7 @@ export class CreateInjector {
   }
 
   async create() {
-    const config: ConfigFile = await this.importConfigFile();
+    const config: ConfigFile = (await this.importConfigFile()).default;
 
     const secretInjector = new SecretInjectorComposer();
     if (config.ssm) secretInjector.registerInjector(new AwsSSMSecretInjector(config.ssm));

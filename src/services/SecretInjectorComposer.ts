@@ -4,6 +4,10 @@ import { SecretInjector } from './SecretInjector';
 export class SecretInjectorComposer extends SecretInjector {
   private injectors: Array<SecretInjector> = [];
 
+  getInjectors() {
+    return this.injectors;
+  }
+
   registerInjector(injector: SecretInjector) {
     this.injectors.push(injector);
   }
