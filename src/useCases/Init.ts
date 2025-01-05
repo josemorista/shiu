@@ -9,10 +9,10 @@ export class InitUseCase {
   async execute(input: Input) {
     const providersConfig: Array<string> = [];
     if (input.providers.includes('ssm')) {
-      providersConfig.push('ssm: { variables: [] }');
+      providersConfig.push('ssm: { variables: [] },');
     }
     if (input.providers.includes('dotenv')) {
-      providersConfig.push("dotenv: { path: '.env' }");
+      providersConfig.push("dotenv: { path: '.env' },");
     }
 
     await writeFile(
@@ -21,7 +21,7 @@ export class InitUseCase {
  * @type {import('psiu').ConfigFile}
  */
 module.exports = {
-  ${providersConfig.join(',\n  ')}
+  ${providersConfig.join('\n  ')}
 };
 `
     );

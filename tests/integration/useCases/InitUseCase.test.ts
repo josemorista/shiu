@@ -23,7 +23,7 @@ describe('InitUseCase', () => {
  */
 module.exports = {
   ssm: { variables: [] },
-  dotenv: { path: '.env' }
+  dotenv: { path: '.env' },
 };
 `
       );
