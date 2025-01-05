@@ -30,7 +30,7 @@ npx psiu init --providers=ssm,dotenv [--outfile=psiu.config.js]
 
 External tools configuration can also be imported to psiu config files to provide easy migrations.
 
-#### Teller
+#### Teller(DEVELOPMENT)
 
 To import teller(v1) configuration use the following script:
 
