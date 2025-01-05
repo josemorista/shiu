@@ -9,9 +9,9 @@ import { DotEnvSecretInjector } from '../../../src/services/DotEnvSecretInjector
 describe('CreateInjector', () => {
   before(async () => {
     await writeFile(
-      'us-config.js',
+      'psiu-config.js',
       `/**
-      * @type {import('universal-secrets').ConfigFile}
+      * @type {import('psiu').ConfigFile}
       */
      module.exports = {
       ssm: { variables: [] },
@@ -22,7 +22,7 @@ describe('CreateInjector', () => {
   });
 
   after(async () => {
-    await unlink('us-config.js');
+    await unlink('psiu-config.js');
   });
 
   it('Should create correct injector from default config file', async () => {
@@ -37,7 +37,7 @@ describe('CreateInjector', () => {
 
   it('Should create correct injector from custom config file', async () => {
     const sut = new CreateInjector();
-    await copyFile('us-config.js', 'us-custom.js');
+    await copyFile('psiu-config.js', 'us-custom.js');
     const injector = await sut.create('us-custom.js');
     expect.equal(injector instanceof SecretInjectorComposer, true);
     if (injector instanceof SecretInjectorComposer) {

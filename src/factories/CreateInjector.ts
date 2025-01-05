@@ -13,9 +13,9 @@ export class CreateInjector {
     if (configFile) return import(join(this.getDir(), configFile));
 
     try {
-      return await import(join(this.getDir(), 'us-config.mjs'));
+      return await import(join(this.getDir(), 'psiu-config.mjs'));
     } catch {
-      return await import(join(this.getDir(), 'us-config.js'));
+      return await import(join(this.getDir(), 'psiu-config.js'));
     }
   }
 

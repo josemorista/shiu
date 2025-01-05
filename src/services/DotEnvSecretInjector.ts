@@ -1,5 +1,7 @@
+import { readFile } from 'node:fs/promises';
 import { Secret } from '../entities/Secret';
 import { SecretInjector } from './SecretInjector';
+import { parse } from 'dotenv';
 
 export interface Config {
   path?: string;
@@ -11,12 +13,7 @@ export class DotEnvSecretInjector extends SecretInjector {
   }
 
   async pullSecrets(): Promise<Array<Secret>> {
-    const vars: Record<string, string> = {};
-    (await import('dotenv')).config({
-      processEnv: vars,
-      path: this.config.path,
-      override: true,
-    });
+    const vars = parse(await readFile(this.config.path || '.env'));
     const secrets: Array<Secret> = [];
     for (const [key, value] of Object.entries(vars)) {
       secrets.push(new Secret(key, value));

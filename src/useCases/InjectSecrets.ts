@@ -1,11 +1,15 @@
-import { resolve } from 'node:path';
 import { SecretInjector } from '../services/SecretInjector';
+import { exec } from 'node:child_process';
 
 export class InjectSecretsUseCase {
   constructor(private injector: SecretInjector) {}
 
-  async execute(file?: string) {
+  async execute(cmd?: string) {
     await this.injector.inject();
-    if (file) await import(resolve(file));
+    if (cmd) {
+      const cp = exec(cmd);
+      cp.stdout?.pipe(process.stdout);
+      cp.stderr?.pipe(process.stderr);
+    }
   }
 }

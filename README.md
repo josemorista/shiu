@@ -1,6 +1,6 @@
 Usage with
 
-us inject -f={{file_path}} [-c=us-config.js]
+us inject -f={{file_path}} [-c=psiu-config.js]
 
 us pull [--outfile={{.env_path}}]
 

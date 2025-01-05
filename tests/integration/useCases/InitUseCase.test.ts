@@ -19,7 +19,7 @@ describe('InitUseCase', () => {
       expect.equal(
         content,
         `/**
- * @type {import('universal-secrets').ConfigFile}
+ * @type {import('psiu').ConfigFile}
  */
 module.exports = {
   ssm: { variables: [] },

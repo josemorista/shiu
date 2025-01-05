@@ -16,9 +16,9 @@ export class InitUseCase {
     }
 
     await writeFile(
-      input.outfile || 'us-config.js',
+      input.outfile || 'psiu-config.js',
       `/**
- * @type {import('universal-secrets').ConfigFile}
+ * @type {import('psiu').ConfigFile}
  */
 module.exports = {
   ${providersConfig.join(',\n  ')}

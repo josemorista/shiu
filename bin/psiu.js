@@ -13,9 +13,10 @@ const injectorFactory = new CreateInjector();
 const initUseCase = new InitUseCase();
 
 const useCases = {
-  inject: async () => {
+  exec: async () => {
     const injector = await injectorFactory.create(args.get('config'));
-    return new InjectSecretsUseCase(injector).execute(args.get('f') || args.safeGet('file'));
+    const cmd = process.argv.join(' ').split('--')[1];
+    return new InjectSecretsUseCase(injector).execute(cmd);
   },
   pull: async () => {
     const injector = await injectorFactory.create();

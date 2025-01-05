@@ -1,5 +1,5 @@
 {
-  "name": "universal-secrets",
+  "name": "psiu",
   "version": "1.1.2",
   "main": "dist/index.js",
   "scripts": {
@@ -8,12 +8,12 @@
     "build": "npx tsc -p tsconfig.build.json"
   },
   "bin": {
-    "us": "bin/us.js"
+    "psiu": "bin/psiu.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Psiu(Personal secret injector utility) is a standardized tool to pull and inject secrets from multiple sources into application or environments",
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@testcontainers/localstack": "^10.16.0",
