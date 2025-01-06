@@ -25,7 +25,7 @@ const useCases = {
   init: () => {
     return initUseCase.execute({
       providers: args.safeGet('providers').split(','),
-      outfile: args.get('outfile'),
+      outfile: args.get('config'),
     });
   },
 };

@@ -47,6 +47,25 @@ describe('AwsSSMSecretInjector', () => {
     expect.deepEqual(await sut.pullSecrets(), [dummySecrets[0]]);
   });
 
+  it('Should throw error if secret does not exists on ssm', async () => {
+    const sut = new AwsSSMSecretInjector({
+      clientConfig: awsConfig,
+      variables: [
+        {
+          name: 'someRandomSecret',
+          path: 'someRandomSecretPath',
+        },
+      ],
+    });
+    try {
+      await sut.pullSecrets();
+    } catch (error) {
+      if (error instanceof Error) {
+        expect.equal(error.message, 'Missing ssm variable someRandomSecret');
+      }
+    }
+  });
+
   it('Should pull secure secret from ssm', async () => {
     await ssmClient.send(
       new PutParameterCommand({

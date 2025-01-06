@@ -23,19 +23,7 @@ npm install psiu
 Psiu can be configured with a config file with smart type completion support. To create a empty config file use the cli init script.
 
 ```bash
-npx psiu init --providers=ssm,dotenv [--outfile=psiu.config.js]
-```
-
-### Importing configuration from other tools
-
-External tools configuration can also be imported to psiu config files to provide easy migrations.
-
-#### Teller(DEVELOPMENT)
-
-To import teller(v1) configuration use the following script:
-
-```bash
-psiu import --from=teller --config=.teller.yml
+npx psiu init --providers=ssm,dotenv [--config=psiu.config.js]
 ```
 
 ## **Usage**

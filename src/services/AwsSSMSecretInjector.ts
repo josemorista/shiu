@@ -1,6 +1,6 @@
 import { Secret } from '../entities/Secret';
 import { SecretInjector } from './SecretInjector';
-import { GetParameterCommand, SSMClient, SSMClientConfig } from '@aws-sdk/client-ssm';
+import { GetParametersCommand, SSMClient, SSMClientConfig } from '@aws-sdk/client-ssm';
 
 interface SSMVariable {
   name: string;
@@ -21,24 +21,51 @@ export class AwsSSMSecretInjector extends SecretInjector {
     this.ssm = new SSMClient(config.clientConfig || {});
   }
 
-  private async retrieveParam(key: string, withDecryption: boolean) {
-    const param = await this.ssm.send(
-      new GetParameterCommand({
-        Name: key,
+  private async retrieveParams(variables: Array<SSMVariable>, withDecryption: boolean) {
+    const params = await this.ssm.send(
+      new GetParametersCommand({
+        Names: variables.map((entry) => entry.path),
         WithDecryption: withDecryption,
       })
     );
-    const value = param.Parameter?.Value;
-    if (!value) throw new Error(`Parameter ${key} not found on ssm`);
-    return value;
+    if (!params.Parameters || params.Parameters.length !== variables.length) {
+      let missingParam = '';
+      for (const variable of variables) {
+        if (!params.Parameters?.some((param) => param.Name === variable.path)) missingParam = variable.name;
+      }
+      throw new Error(`Missing ssm variable ${missingParam}`);
+    }
+    return params.Parameters;
   }
 
   async pullSecrets(): Promise<Array<Secret>> {
     const secrets: Array<Secret> = [];
-    for (const variable of this.config.variables) {
-      const value = await this.retrieveParam(variable.path, !!variable.secret);
-      secrets.push(new Secret(variable.name, value));
+    const encryptedVars: Array<SSMVariable> = [];
+    const nonEncryptedVars: Array<SSMVariable> = [];
+
+    const pathToNameMap = new Map<string, string>();
+
+    for (const entry of this.config.variables) {
+      pathToNameMap.set(entry.path, entry.name);
+
+      if (entry.secret) {
+        encryptedVars.push(entry);
+      } else {
+        nonEncryptedVars.push(entry);
+      }
     }
+
+    const variables = (
+      await Promise.all([this.retrieveParams(nonEncryptedVars, false), this.retrieveParams(encryptedVars, true)])
+    ).flat();
+
+    for (const variable of variables) {
+      if (variable.Name && variable.Value) {
+        const name = pathToNameMap.get(variable.Name);
+        if (name) secrets.push(new Secret(name, variable.Value));
+      }
+    }
+
     return secrets;
   }
 }

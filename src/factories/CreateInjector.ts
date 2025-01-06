@@ -11,7 +11,6 @@ export class CreateInjector {
 
   private async importConfigFile(configFile?: string) {
     if (configFile) return import(join(this.getDir(), configFile));
-
     try {
       return await import(join(this.getDir(), 'psiu-config.mjs'));
     } catch {
@@ -23,6 +22,7 @@ export class CreateInjector {
     const config: ConfigFile = (await this.importConfigFile(configFile)).default;
 
     const secretInjector = new SecretInjectorComposer();
+
     if (config.ssm) secretInjector.registerInjector(new AwsSSMSecretInjector(config.ssm));
     if (config.dotenv) secretInjector.registerInjector(new DotEnvSecretInjector(config.dotenv));
 
