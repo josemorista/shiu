@@ -19,7 +19,7 @@ describe('InitUseCase', () => {
       expect.equal(
         content,
         `/**
- * @type {import('psiu').ConfigFile}
+ * @type {import('shiu').ConfigFile}
  */
 module.exports = {
   ssm: { variables: [] },

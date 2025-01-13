@@ -1,2 +1,2 @@
 export { ConfigFile } from './entities/ConfigFile';
-export { inject } from './facades/PsiuSecretsFacade';
+export { inject } from './facades/ShiuSecretsFacade';

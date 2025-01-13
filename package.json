@@ -1,6 +1,6 @@
 {
-  "name": "psiu",
-  "version": "1.2.0",
+  "name": "shiu",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
     "test:unit": "node --import=tsx --test --experimental-test-coverage tests/unit/**/*.test.ts",
@@ -8,12 +8,17 @@
     "build": "npx tsc -p tsconfig.build.json"
   },
   "bin": {
-    "psiu": "bin/psiu.js"
+    "shiu": "bin/shiu.js"
   },
-  "keywords": [],
+  "keywords": [
+    "shiu",
+    "aws_ssm",
+    "dotenv",
+    "secrets injector"
+  ],
   "author": "",
   "license": "ISC",
-  "description": "Psiu(Personal secret injector utility) is a standardized tool to pull and inject secrets from multiple sources into application or environments",
+  "description": "Shiu is a standardized tool to pull and inject secrets from multiple sources into application or environments",
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@testcontainers/localstack": "^10.16.0",

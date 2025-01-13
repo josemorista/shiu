@@ -12,9 +12,9 @@ export class CreateInjector {
   private async importConfigFile(configFile?: string) {
     if (configFile) return import(join(this.getDir(), configFile));
     try {
-      return await import(join(this.getDir(), 'psiu-config.mjs'));
+      return await import(join(this.getDir(), 'shiu-config.mjs'));
     } catch {
-      return await import(join(this.getDir(), 'psiu-config.js'));
+      return await import(join(this.getDir(), 'shiu-config.js'));
     }
   }
 
