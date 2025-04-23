@@ -22,12 +22,15 @@ export class AwsSSMSecretInjector extends SecretInjector {
   }
 
   private async retrieveParams(variables: Array<SSMVariable>, withDecryption: boolean) {
+    if (!variables.length) return [];
+
     const params = await this.ssm.send(
       new GetParametersCommand({
         Names: variables.map((entry) => entry.path),
         WithDecryption: withDecryption,
       })
     );
+
     if (!params.Parameters || params.Parameters.length !== variables.length) {
       let missingParam = '';
       for (const variable of variables) {
