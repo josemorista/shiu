@@ -15,5 +15,8 @@ jobs:
           node-version: 22
       - name: 'publish'
         run: |
+          npm ci
+          npm run build
+          npm ci --omit=dev
           npm config set "//registry.npmjs.org/:_authToken=${{secrets.NPM_AUTH_TOKEN}}" --userconfig .npmrc
           npm publish
