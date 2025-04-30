@@ -1,4 +1,5 @@
 import { writeFile } from 'fs/promises';
+import { stringify } from 'yaml';
 
 interface Input {
   providers: Array<string>;
@@ -7,23 +8,15 @@ interface Input {
 
 export class InitUseCase {
   async execute(input: Input) {
-    const providersConfig: Array<string> = [];
+    const providersConfig: Record<string, unknown> = {};
+
     if (input.providers.includes('ssm')) {
-      providersConfig.push('ssm: { variables: [] },');
+      providersConfig.ssm = { variables: [] };
     }
     if (input.providers.includes('dotenv')) {
-      providersConfig.push("dotenv: { path: '.env' },");
+      providersConfig.dotenv = { path: '.env' };
     }
 
-    await writeFile(
-      input.outfile || 'shiu-config.js',
-      `/**
- * @type {import('shiu').ConfigFile}
- */
-module.exports = {
-  ${providersConfig.join('\n  ')}
-};
-`
-    );
+    await writeFile(input.outfile || 'shiu-config.yml', stringify(providersConfig));
   }
 }

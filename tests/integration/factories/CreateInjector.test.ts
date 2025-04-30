@@ -5,24 +5,15 @@ import { CreateInjector } from '../../../src/factories/CreateInjector';
 import { SecretInjectorComposer } from '../../../src/services/SecretInjectorComposer';
 import { AwsSSMSecretInjector } from '../../../src/services/AwsSSMSecretInjector';
 import { DotEnvSecretInjector } from '../../../src/services/DotEnvSecretInjector';
+import { stringify } from 'yaml';
 
 describe('CreateInjector', () => {
   before(async () => {
-    await writeFile(
-      'shiu-config.js',
-      `/**
-      * @type {import('shiu').ConfigFile}
-      */
-     module.exports = {
-      ssm: { variables: [] },
-      dotenv: { path: '.env' }
-      };
-      `
-    );
+    await writeFile('shiu-config.yml', stringify({ ssm: { variables: [] }, dotenv: { path: '.env' } }));
   });
 
   after(async () => {
-    await unlink('shiu-config.js');
+    await unlink('shiu-config.yml');
   });
 
   it('Should create correct injector from default config file', async () => {
@@ -37,13 +28,13 @@ describe('CreateInjector', () => {
 
   it('Should create correct injector from custom config file', async () => {
     const sut = new CreateInjector();
-    await copyFile('shiu-config.js', 'us-custom.js');
-    const injector = await sut.create('us-custom.js');
+    await copyFile('shiu-config.yml', 'us-custom.yml');
+    const injector = await sut.create('us-custom.yml');
     expect.equal(injector instanceof SecretInjectorComposer, true);
     if (injector instanceof SecretInjectorComposer) {
       expect.equal(injector.getInjectors()[0] instanceof AwsSSMSecretInjector, true);
       expect.equal(injector.getInjectors()[1] instanceof DotEnvSecretInjector, true);
     }
-    await unlink('us-custom.js');
+    await unlink('us-custom.yml');
   });
 });
