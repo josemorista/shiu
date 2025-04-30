@@ -1,6 +1,6 @@
 {
   "name": "shiu",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "main": "dist/index.js",
   "scripts": {
     "test:unit": "node --import=tsx --test --experimental-test-coverage tests/unit/**/*.test.ts",
