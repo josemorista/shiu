@@ -23,7 +23,7 @@ npm install shiu
 Shiu can be configured with a config file with smart type completion support. To create a empty config file use the cli init script.
 
 ```bash
-npx shiu init --providers=ssm,dotenv [--config=shiu.config.js]
+npx shiu init -p=ssm,dotenv [-f=shiu.config.yml]
 ```
 
 ## **Usage**
@@ -37,10 +37,10 @@ Shiu provides a cli and a simple API options for injecting secrets into your app
 Cli injection can be done calling exec script with the cmd to be executed. Ex:
 
 ```bash
-npx shiu exec [--config=shiu-config.js] -- node index.js
+npx shiu exec [-f=shiu-config.yml] -- node index.js
 ```
 
-- **--config** is optional and defaults to **shiu-config.js**.
+- **-f** or **--config** is optional and defaults to **shiu-config.yml**.
 
 #### Application usage
 
@@ -51,10 +51,10 @@ To inject secrets simply import the inject function from 'shiu' and execute it t
 To pull secrets to a dotenv file use the cli script pull. Ex:
 
 ```bash
-shiu pull [--outfile={{.env_path}}]
+shiu pull [-o={{.env_path}}]
 ```
 
-- **--outfile** is optional and defaults to **.env**.
+- **-o** or **--outfile** is optional and defaults to **.env**.
 
 ## **Contributing**
 
